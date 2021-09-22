@@ -1,0 +1,7 @@
+
+调试时记得在JVM options添加如下配置，才能再sentinel控制台配置流控规则
+
+-Djava.net.preferIPv4Stack=true
+-Dproject.name=annotation-spring-aop
+-Dcsp.sentinel.api.port=8720
+-Dcsp.sentinel.dashboard.server=192.168.0.102:8080

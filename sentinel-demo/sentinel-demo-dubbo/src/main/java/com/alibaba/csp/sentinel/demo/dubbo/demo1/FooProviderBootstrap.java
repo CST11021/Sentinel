@@ -15,21 +15,21 @@
  */
 package com.alibaba.csp.sentinel.demo.dubbo.demo1;
 
-import java.util.Collections;
-
 import com.alibaba.csp.sentinel.init.InitExecutor;
 import com.alibaba.csp.sentinel.slots.block.RuleConstant;
 import com.alibaba.csp.sentinel.slots.block.flow.FlowRule;
 import com.alibaba.csp.sentinel.slots.block.flow.FlowRuleManager;
-
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+import java.io.IOException;
+import java.util.Collections;
 
 /**
  * Please add the following VM arguments:
  * <pre>
- * -Djava.net.preferIPv4Stack=true
- * -Dcsp.sentinel.api.port=8720
- * -Dproject.name=dubbo-provider-demo
+-Djava.net.preferIPv4Stack=true
+-Dcsp.sentinel.api.port=8720
+-Dproject.name=dubbo-provider-demo
  * </pre>
  *
  * @author Eric Zhao
@@ -43,6 +43,7 @@ public class FooProviderBootstrap {
         // Users don't need to manually call this method.
         InitExecutor.doInit();
 
+        // 初始化限流规则
         initFlowRule();
 
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
@@ -50,6 +51,11 @@ public class FooProviderBootstrap {
         context.refresh();
 
         System.out.println("Service provider is ready");
+        try {
+            System.in.read();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private static void initFlowRule() {

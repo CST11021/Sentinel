@@ -15,15 +15,11 @@
  */
 package com.alibaba.csp.sentinel.demo.apache.dubbo;
 
-import java.util.Collections;
-
 import com.alibaba.csp.sentinel.demo.apache.dubbo.provider.ProviderConfiguration;
 import com.alibaba.csp.sentinel.init.InitExecutor;
-import com.alibaba.csp.sentinel.slots.block.RuleConstant;
-import com.alibaba.csp.sentinel.slots.block.flow.FlowRule;
-import com.alibaba.csp.sentinel.slots.block.flow.FlowRuleManager;
-
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+import java.io.IOException;
 
 /**
  * Provider demo for Apache Dubbo 2.7.x or above. Please add the following VM arguments:
@@ -48,6 +44,11 @@ public class FooProviderBootstrap {
         context.refresh();
 
         System.out.println("Service provider is ready");
+        try {
+            System.in.read();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

@@ -19,6 +19,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
+ * -Djava.net.preferIPv4Stack=true
+ * -Dproject.name=annotation-spring-aop
+ * -Dcsp.sentinel.api.port=8720
+ * -Dcsp.sentinel.dashboard.server=192.168.0.102:8080
+ *
  * @author Eric Zhao
  */
 @SpringBootApplication
@@ -27,4 +32,5 @@ public class DemoApplication {
     public static void main(String[] args) {
         SpringApplication.run(DemoApplication.class, args);
     }
+
 }

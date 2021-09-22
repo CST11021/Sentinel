@@ -21,12 +21,16 @@ import com.alibaba.csp.sentinel.slots.block.SentinelRpcException;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 /**
  * Please add the following VM arguments:
  * <pre>
- * -Djava.net.preferIPv4Stack=true
- * -Dcsp.sentinel.api.port=8721
- * -Dproject.name=dubbo-consumer-demo
+-Djava.net.preferIPv4Stack=true
+-Dcsp.sentinel.api.port=8721
+-Dproject.name=dubbo-consumer-demo
  * </pre>
  *
  * @author Eric Zhao
@@ -40,9 +44,17 @@ public class FooConsumerBootstrap {
 
         FooServiceConsumer service = consumerContext.getBean(FooServiceConsumer.class);
 
-        for (int i = 0; i < 15; i++) {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        while (true) {
+            String name = null;
             try {
-                String message = service.sayHello("Eric");
+                name = reader.readLine();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                String message = service.sayHello(name);
                 System.out.println("Success: " + message);
             } catch (SentinelRpcException ex) {
                 System.out.println("Blocked");

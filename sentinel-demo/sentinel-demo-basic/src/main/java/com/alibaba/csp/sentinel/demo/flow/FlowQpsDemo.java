@@ -15,19 +15,19 @@
  */
 package com.alibaba.csp.sentinel.demo.flow;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import com.alibaba.csp.sentinel.util.TimeUtil;
 import com.alibaba.csp.sentinel.Entry;
 import com.alibaba.csp.sentinel.SphU;
 import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.alibaba.csp.sentinel.slots.block.RuleConstant;
 import com.alibaba.csp.sentinel.slots.block.flow.FlowRule;
 import com.alibaba.csp.sentinel.slots.block.flow.FlowRuleManager;
+import com.alibaba.csp.sentinel.util.TimeUtil;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author jialiang.linjl
@@ -99,6 +99,7 @@ public class FlowQpsDemo {
                     TimeUnit.SECONDS.sleep(1);
                 } catch (InterruptedException e) {
                 }
+
                 long globalTotal = total.get();
                 long oneSecondTotal = globalTotal - oldTotal;
                 oldTotal = globalTotal;
@@ -127,6 +128,7 @@ public class FlowQpsDemo {
                 + ", block:" + block.get());
             System.exit(0);
         }
+
     }
 
     static class RunTask implements Runnable {
@@ -137,13 +139,15 @@ public class FlowQpsDemo {
 
                 try {
                     entry = SphU.entry(KEY);
-                    // token acquired, means pass
+                    // 获得令牌，表示通过
                     pass.addAndGet(1);
                 } catch (BlockException e1) {
+                    // 被限流的次数
                     block.incrementAndGet();
                 } catch (Exception e2) {
                     // biz exception
                 } finally {
+                    // 总调用次数
                     total.incrementAndGet();
                     if (entry != null) {
                         entry.exit();
@@ -156,6 +160,7 @@ public class FlowQpsDemo {
                 } catch (InterruptedException e) {
                     // ignore
                 }
+
             }
         }
     }

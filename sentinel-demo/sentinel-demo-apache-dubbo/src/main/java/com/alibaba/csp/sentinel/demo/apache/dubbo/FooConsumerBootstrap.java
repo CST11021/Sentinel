@@ -44,13 +44,16 @@ public class FooConsumerBootstrap {
     private static final String RES_KEY = INTERFACE_RES_KEY + ":sayHello(java.lang.String)";
 
     public static void main(String[] args) throws InterruptedException {
+
         AnnotationConfigApplicationContext consumerContext = new AnnotationConfigApplicationContext();
         consumerContext.register(ConsumerConfiguration.class);
         consumerContext.refresh();
+
+        // 服务qps限流10
         initFlowRule(10, false);
 
+        // 测试1
         FooServiceConsumer service = consumerContext.getBean(FooServiceConsumer.class);
-
         for (int i = 0; i < 15; i++) {
             try {
                 String message = service.sayHello("Eric");
@@ -62,8 +65,12 @@ public class FooConsumerBootstrap {
             }
         }
 
-        // method flowcontrol
+
+
+
+        // 测试2：方法流控
         Thread.sleep(1000);
+        // 服务qps限流10，sayHello方法限流5
         initFlowRule(20, true);
         for (int i = 0; i < 10; i++) {
             try {
@@ -72,16 +79,17 @@ public class FooConsumerBootstrap {
             } catch (SentinelRpcException ex) {
                 System.out.println("Blocked");
                 System.out.println("fallback:" + service.doAnother());
-
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
         }
 
+
+
+
         // fallback to result
         Thread.sleep(1000);
         registryCustomFallback();
-
         for (int i = 0; i < 10; i++) {
             try {
                 String message = service.sayHello("Eric");
@@ -139,12 +147,19 @@ public class FooConsumerBootstrap {
                 });
     }
 
-
+    /**
+     * 初始化限流规则
+     *
+     * @param interfaceFlowLimit    qps限流数量
+     * @param method
+     */
     private static void initFlowRule(int interfaceFlowLimit, boolean method) {
         FlowRule flowRule = new FlowRule(INTERFACE_RES_KEY)
                 .setCount(interfaceFlowLimit)
                 .setGrade(RuleConstant.FLOW_GRADE_QPS);
+
         List<FlowRule> list = new ArrayList<>();
+        // 如果是方法，则添加方法限流
         if (method) {
             FlowRule flowRule1 = new FlowRule(RES_KEY)
                     .setCount(5)

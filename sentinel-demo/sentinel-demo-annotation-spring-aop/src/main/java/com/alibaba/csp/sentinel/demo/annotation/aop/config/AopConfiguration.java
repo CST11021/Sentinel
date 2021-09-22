@@ -30,4 +30,5 @@ public class AopConfiguration {
     public SentinelResourceAspect sentinelResourceAspect() {
         return new SentinelResourceAspect();
     }
+
 }

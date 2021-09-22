@@ -48,6 +48,7 @@
             <artifactId>sentinel-transport-simple-http</artifactId>
             <version>${project.version}</version>
         </dependency>
+
     </dependencies>
 
 </project>

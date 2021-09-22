@@ -8,3 +8,5 @@ The examples demonstrate:
 - How to use Apache RocketMQ client with Sentinel
 - How to use Sentinel annotation support
 - How to add your own logic to Sentinel using Slot Chain SPI
+
+* sentinel-demo-annotation-spring-aop：介绍@SentinelResource注解的使用
