@@ -9,4 +9,10 @@ The examples demonstrate:
 - How to use Sentinel annotation support
 - How to add your own logic to Sentinel using Slot Chain SPI
 
-* sentinel-demo-annotation-spring-aop：介绍@SentinelResource注解的使用
+* sentinel-demo-annotation-spring-aop：介绍@SentinelResource注解的使用，启动类记得添加如下配置
+-Djava.net.preferIPv4Stack=true
+-Dproject.name=annotation-spring-aop
+-Dcsp.sentinel.api.port=8720
+-Dcsp.sentinel.dashboard.server=127.0.0.1:8080
+
+
