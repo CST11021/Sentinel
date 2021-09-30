@@ -110,13 +110,11 @@
             <version>1.2.0</version>
             <scope>test</scope>
         </dependency>
-
         <!--for Zookeeper rule publisher sample-->
         <dependency>
             <groupId>org.apache.curator</groupId>
             <artifactId>curator-recipes</artifactId>
             <version>${curator.version}</version>
-            <scope>test</scope>
         </dependency>
 
         <dependency>
@@ -134,6 +132,12 @@
         	<artifactId>system-rules</artifactId>
         	<version>1.16.1</version>
         	<scope>test</scope>
+        </dependency>
+        <!--内嵌的测试zk-->
+        <dependency>
+            <groupId>org.apache.curator</groupId>
+            <artifactId>curator-test</artifactId>
+            <version>2.10.0</version>
         </dependency>
     </dependencies>
 

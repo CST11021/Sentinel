@@ -15,12 +15,11 @@
  */
 package com.alibaba.csp.sentinel.dashboard.repository.rule;
 
-import java.util.concurrent.atomic.AtomicLong;
-
 import com.alibaba.csp.sentinel.dashboard.datasource.entity.rule.ParamFlowRuleEntity;
 import com.alibaba.csp.sentinel.slots.block.flow.param.ParamFlowClusterConfig;
-
 import org.springframework.stereotype.Component;
+
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * @author Eric Zhao
@@ -29,7 +28,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class InMemParamFlowRuleStore extends InMemoryRuleRepositoryAdapter<ParamFlowRuleEntity> {
 
-    private static AtomicLong ids = new AtomicLong(0);
+    private static AtomicLong ids = new AtomicLong(System.currentTimeMillis());
 
     @Override
     protected long nextId() {
