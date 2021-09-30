@@ -22,13 +22,13 @@ package com.alibaba.csp.sentinel;
  * @author Yanming Zhou
  */
 public enum EntryType {
+
     /**
-     * Inbound traffic
+     IN：是指进入我们系统的入口流量，比如 http 请求或者是其他的 rpc 之类的请求，设置为IN主要是为了保护自己系统。
+     OUT：是指我们系统调用其他第三方服务的出口流量，设置为OUT是为了保护第三方系统。
      */
+
     IN,
-    /**
-     * Outbound traffic
-     */
     OUT;
 
 }
