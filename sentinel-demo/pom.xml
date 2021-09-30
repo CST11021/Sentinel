@@ -21,6 +21,7 @@
         <module>sentinel-demo-zookeeper-datasource</module>
         <module>sentinel-demo-apollo-datasource</module>
         <module>sentinel-demo-annotation-spring-aop</module>
+        <module>sentinel-demo-annotation-spring-aop-zk</module>
         <module>sentinel-demo-parameter-flow-control</module>
         <module>sentinel-demo-slot-spi</module>
         <module>sentinel-demo-slotchain-spi</module>
