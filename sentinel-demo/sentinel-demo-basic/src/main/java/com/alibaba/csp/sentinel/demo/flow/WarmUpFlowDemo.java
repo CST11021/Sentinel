@@ -15,19 +15,19 @@
  */
 package com.alibaba.csp.sentinel.demo.flow;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import com.alibaba.csp.sentinel.util.TimeUtil;
 import com.alibaba.csp.sentinel.Entry;
 import com.alibaba.csp.sentinel.SphU;
 import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.alibaba.csp.sentinel.slots.block.RuleConstant;
 import com.alibaba.csp.sentinel.slots.block.flow.FlowRule;
 import com.alibaba.csp.sentinel.slots.block.flow.FlowRuleManager;
+import com.alibaba.csp.sentinel.util.TimeUtil;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * When {@link FlowRule#controlBehavior} set to {@link RuleConstant#CONTROL_BEHAVIOR_WARM_UP}, real passed qps will
@@ -88,7 +88,7 @@ public class WarmUpFlowDemo {
         timer.setName("sentinel-timer-task");
         timer.start();
 
-        //first make the system run on a very low condition
+        // 热身，首先让系统在一个非常低的条件下运行
         for (int i = 0; i < 3; i++) {
             Thread t = new Thread(new WarmUpTask());
             t.setName("sentinel-warmup-task");
@@ -97,9 +97,8 @@ public class WarmUpFlowDemo {
         Thread.sleep(20000);
 
         /*
-         * Start more thread to simulate more qps. Since we use {@link RuleConstant.CONTROL_BEHAVIOR_WARM_UP} as
-         * {@link FlowRule#controlBehavior}, real passed qps will increase to {@link FlowRule#count} in
-         * {@link FlowRule#warmUpPeriodSec} seconds.
+         * 启动更多线程来模拟更多qps。
+         * 因为我们使用CONTROL_BEHAVIOR_WARM_UP策略，在10（FlowRule#warmUpPeriodSec）秒内实际通过的qps将增加到20（FlowRule#count）
          */
         for (int i = 0; i < threadCount; i++) {
             Thread t = new Thread(new RunTask());
@@ -115,6 +114,11 @@ public class WarmUpFlowDemo {
         rule1.setCount(20);
         rule1.setGrade(RuleConstant.FLOW_GRADE_QPS);
         rule1.setLimitApp("default");
+
+        // Sentinel的Warm Up（RuleConstant.CONTROL_BEHAVIOR_WARM_UP）方式，即预热/冷启动方式。
+        // 当系统长期处于低水位的情况下，当流量突然增加时，直接把系统拉升到高水位可能瞬间把系统压垮。
+        // 通过"冷启动"，让通过的流量缓慢增加，在一定时间内逐渐增加到阈值上限，给冷系统一个预热的时间，
+        // 避免冷系统被压垮。warm up冷启动主要用于启动需要额外开销的场景，例如建立数据库连接等。
         rule1.setControlBehavior(RuleConstant.CONTROL_BEHAVIOR_WARM_UP);
         rule1.setWarmUpPeriodSec(10);
 
@@ -141,6 +145,7 @@ public class WarmUpFlowDemo {
                         entry.exit();
                     }
                 }
+
                 Random random2 = new Random();
                 try {
                     TimeUnit.MILLISECONDS.sleep(random2.nextInt(2000));

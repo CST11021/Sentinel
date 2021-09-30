@@ -19,6 +19,15 @@ import com.alibaba.csp.sentinel.slots.block.AbstractRule;
 import com.alibaba.csp.sentinel.slots.block.RuleConstant;
 
 /**
+ * resource：资源名，即限流规则的作用对象
+ * count: 限流阈值
+ * grade: 限流阈值类型（QPS 或并发线程数）
+ * limitApp: 流控针对的调用来源，若为 default 则不区分调用来源
+ * strategy: 调用关系限流策略
+ * controlBehavior: 流量控制效果（直接拒绝、Warm Up、匀速排队）
+ *
+ *
+ *
  * <p>
  * Each flow rule is mainly composed of three factors: <strong>grade</strong>,
  * <strong>strategy</strong> and <strong>controlBehavior</strong>:
@@ -39,7 +48,6 @@ public class FlowRule extends AbstractRule {
         super();
         setLimitApp(RuleConstant.LIMIT_APP_DEFAULT);
     }
-
     public FlowRule(String resourceName) {
         super();
         setResource(resourceName);
@@ -47,13 +55,11 @@ public class FlowRule extends AbstractRule {
     }
 
     /**
-     * The threshold type of flow control (0: thread count, 1: QPS).
+     * 限流阈值类型，例如：QPS、并发线程数，默认是QPS
      */
     private int grade = RuleConstant.FLOW_GRADE_QPS;
 
-    /**
-     * Flow control threshold count.
-     */
+    /** 限流阈值 */
     private double count;
 
     /**
@@ -71,8 +77,11 @@ public class FlowRule extends AbstractRule {
     private String refResource;
 
     /**
-     * Rate limiter control behavior.
-     * 0. default(reject directly), 1. warm up, 2. rate limiter, 3. warm up + rate limiter
+     * 流量控制效果：
+     * 0. (默认)直接拒绝,
+     * 1. warm up,
+     * 2. rate limiter（匀速排队）,
+     * 3. warm up + rate limiter
      */
     private int controlBehavior = RuleConstant.CONTROL_BEHAVIOR_DEFAULT;
 
@@ -93,6 +102,10 @@ public class FlowRule extends AbstractRule {
      * The traffic shaping (throttling) controller.
      */
     private TrafficShapingController controller;
+
+
+
+
 
     public int getControlBehavior() {
         return controlBehavior;

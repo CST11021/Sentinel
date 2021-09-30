@@ -15,18 +15,18 @@
  */
 package com.alibaba.csp.sentinel.demo.flow;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import com.alibaba.csp.sentinel.util.TimeUtil;
 import com.alibaba.csp.sentinel.Entry;
 import com.alibaba.csp.sentinel.SphU;
 import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.alibaba.csp.sentinel.slots.block.RuleConstant;
 import com.alibaba.csp.sentinel.slots.block.flow.FlowRule;
 import com.alibaba.csp.sentinel.slots.block.flow.FlowRuleManager;
+import com.alibaba.csp.sentinel.util.TimeUtil;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author jialiang.linjl
@@ -45,9 +45,7 @@ public class FlowThreadDemo {
     private static volatile int methodBRunningTime = 2000;
 
     public static void main(String[] args) throws Exception {
-        System.out.println(
-            "MethodA will call methodB. After running for a while, methodB becomes fast, "
-                + "which make methodA also become fast ");
+        System.out.println("MethodA将调用methodB。运行一段时间后，methodB变得快了，这使得methodA也变得快了");
         tick();
         initFlowRule();
 
@@ -61,6 +59,7 @@ public class FlowThreadDemo {
                             TimeUnit.MILLISECONDS.sleep(5);
                             methodA = SphU.entry("methodA");
                             activeThread.incrementAndGet();
+
                             Entry methodB = SphU.entry("methodB");
                             TimeUnit.MILLISECONDS.sleep(methodBRunningTime);
                             methodB.exit();
@@ -88,7 +87,7 @@ public class FlowThreadDemo {
         List<FlowRule> rules = new ArrayList<FlowRule>();
         FlowRule rule1 = new FlowRule();
         rule1.setResource("methodA");
-        // set limit concurrent thread for 'methodA' to 20
+        // 将“methodA”的并发线程限制设置为20
         rule1.setCount(20);
         rule1.setGrade(RuleConstant.FLOW_GRADE_THREAD);
         rule1.setLimitApp("default");
@@ -140,7 +139,7 @@ public class FlowThreadDemo {
                     stop = true;
                 }
                 if (seconds == 40) {
-                    System.out.println("method B is running much faster; more requests are allowed to pass");
+                    System.out.println("方法B运行得更快;更多的请求被允许通过");
                     methodBRunningTime = 20;
                 }
             }

@@ -23,8 +23,11 @@ import com.alibaba.csp.sentinel.node.IntervalProperty;
  */
 public final class RuleConstant {
 
+    /** 限流阈值类型，例如：QPS、并发线程数，默认是QPS */
     public static final int FLOW_GRADE_THREAD = 0;
     public static final int FLOW_GRADE_QPS = 1;
+
+
 
     public static final int DEGRADE_GRADE_RT = 0;
     /**

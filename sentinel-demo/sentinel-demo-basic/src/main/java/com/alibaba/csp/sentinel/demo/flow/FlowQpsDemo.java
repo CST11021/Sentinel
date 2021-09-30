@@ -47,6 +47,7 @@ public class FlowQpsDemo {
     private static int seconds = 60 + 40;
 
     public static void main(String[] args) throws Exception {
+        // 初始化qps限流规则
         initFlowQpsRule();
 
         tick();

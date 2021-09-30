@@ -23,7 +23,7 @@ package com.alibaba.csp.sentinel.slots.block;
 public interface Rule {
 
     /**
-     * Get target resource of this rule.
+     * 获取资源名，即限流规则的作用对象
      *
      * @return target resource of this rule
      */

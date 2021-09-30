@@ -1,0 +1,7 @@
+AuthorityDemo：黑/百名单限流测试
+
+
+限流测试：
+com.alibaba.csp.sentinel.demo.flow.FlowQpsDemo：按qps限流
+com.alibaba.csp.sentinel.demo.flow.FlowThreadDemo：按线程数限流，即一秒内有允许多少线程同时执行
+com.alibaba.csp.sentinel.demo.flow.PaceFlowDemo：按qps限流，并设置阻塞策略：1、立即拒绝 2、放到队列中，并设置超时时间

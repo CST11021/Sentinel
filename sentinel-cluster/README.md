@@ -1,7 +1,7 @@
-# Sentinel Cluster Flow Control
+# Sentinel集群流量控制
 
-This is the default implementation of Sentinel cluster flow control.
+这是 Sentinel 集群流量控制的默认实现
 
-- `sentinel-cluster-common-default`: common module for cluster transport and functions
-- `sentinel-cluster-client-default`: default cluster client module using Netty as underlying transport library
-- `sentinel-cluster-server-default`: default cluster server module
+- `sentinel-cluster-common-default`: 集群传输和功能的通用模块
+- `sentinel-cluster-client-default`: 使用 Netty 作为底层传输库的默认集群客户端模块
+- `sentinel-cluster-server-default`: 默认集群服务端模块

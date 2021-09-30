@@ -15,19 +15,19 @@
  */
 package com.alibaba.csp.sentinel.demo.flow;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import com.alibaba.csp.sentinel.util.TimeUtil;
 import com.alibaba.csp.sentinel.Entry;
 import com.alibaba.csp.sentinel.SphU;
 import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.alibaba.csp.sentinel.slots.block.RuleConstant;
 import com.alibaba.csp.sentinel.slots.block.flow.FlowRule;
 import com.alibaba.csp.sentinel.slots.block.flow.FlowRuleManager;
+import com.alibaba.csp.sentinel.util.TimeUtil;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * <p>
@@ -108,14 +108,21 @@ public class PaceFlowDemo {
     private static final AtomicInteger block = new AtomicInteger();
 
     public static void main(String[] args) throws InterruptedException {
+
+
         System.out.println("pace behavior");
         countDown = new CountDownLatch(1);
+        // 初始化限流规则，pqs限流10，超过阈值的请求放到队列中，如果任务在20秒内还未被执行，则拒绝
         initPaceFlowRule();
+        // 启动线程任务测试
         simulatePulseFlow();
         countDown.await();
 
         System.out.println("done");
         System.out.println("total pass:" + pass.get() + ", total block:" + block.get());
+
+
+
 
         System.out.println();
         System.out.println("default behavior");
@@ -124,7 +131,9 @@ public class PaceFlowDemo {
         pass.set(0);
         block.set(0);
         countDown = new CountDownLatch(1);
+        // 初始化默认的限流规则，pqs限流10，超过阈值的请求立即拒绝
         initDefaultFlowRule();
+        // 启动线程任务测试
         simulatePulseFlow();
         countDown.await();
         System.out.println("done");
@@ -132,6 +141,9 @@ public class PaceFlowDemo {
         System.exit(0);
     }
 
+    /**
+     * 初始化限流规则，pqs限流10，超过阈值的请求放到队列中，如果任务在20秒内还未被执行，则拒绝
+     */
     private static void initPaceFlowRule() {
         List<FlowRule> rules = new ArrayList<FlowRule>();
         FlowRule rule1 = new FlowRule();
@@ -140,8 +152,8 @@ public class PaceFlowDemo {
         rule1.setGrade(RuleConstant.FLOW_GRADE_QPS);
         rule1.setLimitApp("default");
         /*
-         * CONTROL_BEHAVIOR_RATE_LIMITER means requests more than threshold will be queueing in the queue,
-         * until the queueing time is more than {@link FlowRule#maxQueueingTimeMs}, the requests will be rejected.
+         * CONTROL_BEHAVIOR_RATE_LIMITER 表示超过阈值的请求将在队列中排队，
+         * 直到排队时间超过{@link FlowRule#maxQueueingTimeMs}，请求将被拒绝。
          */
         rule1.setControlBehavior(RuleConstant.CONTROL_BEHAVIOR_RATE_LIMITER);
         rule1.setMaxQueueingTimeMs(20 * 1000);
@@ -150,6 +162,9 @@ public class PaceFlowDemo {
         FlowRuleManager.loadRules(rules);
     }
 
+    /**
+     * 初始化限流规则，pqs限流10，超过阈值的请求立即拒绝
+     */
     private static void initDefaultFlowRule() {
         List<FlowRule> rules = new ArrayList<FlowRule>();
         FlowRule rule1 = new FlowRule();
@@ -157,7 +172,7 @@ public class PaceFlowDemo {
         rule1.setCount(count);
         rule1.setGrade(RuleConstant.FLOW_GRADE_QPS);
         rule1.setLimitApp("default");
-        // CONTROL_BEHAVIOR_DEFAULT means requests more than threshold will be rejected immediately.
+        // CONTROL_BEHAVIOR_DEFAULT表示超过阈值的请求将立即被拒绝。
         rule1.setControlBehavior(RuleConstant.CONTROL_BEHAVIOR_DEFAULT);
 
         rules.add(rule1);
@@ -182,8 +197,7 @@ public class PaceFlowDemo {
                             entry.exit();
                             pass.incrementAndGet();
                             long cost = TimeUtil.currentTimeMillis() - startTime;
-                            System.out.println(
-                                TimeUtil.currentTimeMillis() + " one request pass, cost " + cost + " ms");
+                            System.out.println(TimeUtil.currentTimeMillis() + " 一个请求通过, 耗时 " + cost + " ms");
                         }
                     }
 

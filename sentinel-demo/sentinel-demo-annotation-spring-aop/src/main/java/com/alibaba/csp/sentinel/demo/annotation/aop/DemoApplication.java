@@ -22,7 +22,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * -Djava.net.preferIPv4Stack=true
  * -Dproject.name=annotation-spring-aop
  * -Dcsp.sentinel.api.port=8720
- * -Dcsp.sentinel.dashboard.server=192.168.0.102:8080
+ * -Dcsp.sentinel.dashboard.server=127.0.0.1:8080
  *
  * @author Eric Zhao
  */
